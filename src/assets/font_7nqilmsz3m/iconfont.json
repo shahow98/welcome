@@ -1,0 +1,16 @@
+{
+  "id": "",
+  "name": "",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "836675",
+      "name": "i-cursor",
+      "font_class": "icursor",
+      "unicode": "e744",
+      "unicode_decimal": 59204
+    }
+  ]
+}
