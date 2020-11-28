@@ -1,11 +1,11 @@
 <template>
   <div class="typer">
-    <span :style="fontStyle">{{ inputText }}</span>
+    <span :style="textStyle" v-html="inputText"></span>
     <transition name="fade">
       <i
         v-show="showCursor"
         class="iconfont icon-icursor"
-        :style="fontStyle"
+        :style="cursorStyle"
       ></i>
     </transition>
   </div>
@@ -15,8 +15,26 @@
 export default {
   name: "typer",
   props: {
-      placeholder: String,
-      fontSize: Number
+    placeholder: {
+      type: String,
+      default: "placeholder...",
+    },
+    fontSize: {
+      type: Number,
+      default: 30,
+    },
+    textColor: {
+      type: String,
+      default: "#000000",
+    },
+    cursorColor: {
+      type: String,
+      default: "#000000",
+    },
+    multiRow: {
+      type: Boolean,
+      default: false,
+    },
   },
   data() {
     return {
@@ -24,10 +42,28 @@ export default {
       point: 0,
       state: "b",
       showCursor: true,
-      fontStyle: {
+      textStyle: {
         fontSize: `${this.fontSize}px`,
+        color: `${this.textColor}`,
+      },
+      cursorStyle: {
+        fontSize: `${this.fontSize}px`,
+        color: `${this.cursorColor}`,
       },
     };
+  },
+  computed: {
+    multiText() {
+      let buff = this.placeholder;
+      // let buff = this.placeholder.replace(/\s/g, "&nbsp;");
+      let multiText = new Array();
+      if (this.multiRow) {
+        multiText = buff.split("\n");
+      } else {
+        multiText.push(buff);
+      }
+      return multiText;
+    },
   },
   mounted() {
     this.typerAnimation();
@@ -35,7 +71,7 @@ export default {
   },
   methods: {
     showText() {
-      const holder = this.placeholder;
+      const holder = this.multiText[0];
       this.inputText = holder.substring(0, this.point);
       if (this.state === "b") {
         this.point++;
@@ -48,6 +84,15 @@ export default {
           this.state = "b";
         }
       }
+    },
+    addText(oldVal, str) {
+      return `${oldVal}${str}`;
+    },
+    delText(oldVal) {
+      let ind = oldVal.lastIndexOf("&nbsp;");
+      ind = ind !== -1 ? ind : 0;
+      oldVal.substring(0, ind);
+      return ``;
     },
     typerAnimation() {
       setInterval(() => {
