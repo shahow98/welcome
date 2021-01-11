@@ -1,12 +1,17 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import Home from '../views/home.vue'
+import screensaver from '@/components/services/screensaver.vue'
 
 const routes = [
   {
     path: '/',
+    name: 'screensaver',
+    component: screensaver
+  },
+  {
+    path: '/home',
     name: 'home',
-    component: Home
-  }
+    component: () => import('@/components/services/home.vue')
+  },
 ]
 
 const router = createRouter({
